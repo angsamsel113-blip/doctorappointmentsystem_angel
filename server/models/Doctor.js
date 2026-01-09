@@ -1,65 +1,29 @@
 const mongoose = require('mongoose');
 
-const doctorSchema = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: [true, 'Please add doctor name'],
-      trim: true,
-    },
-    specialization: {
-      type: String,
-      required: [true, 'Please add specialization'],
-      trim: true,
-    },
-    experience: {
-      type: Number,
-      required: [true, 'Please add years of experience'],
-      min: 0,
-    },
-    availability: {
-      type: [String], // e.g. "Mon 10:00-12:00"
-      default: [],
-    },
-    contactDetails: {
-      type: String,
-      required: [true, 'Please add contact details'],
-      trim: true,
-    },
-  },
-  {
-    timestamps: true,
-  }
-);
-
-module.exports = mongoose.model('Doctor', doctorSchema);
-
-const mongoose = require('mongoose');
-
 const doctorSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, 'Please add a doctor name'],
-    trim: true
+    required: [true, 'Please add doctor name'],
+    trim: true,
   },
   specialization: {
     type: String,
     required: [true, 'Please add specialization'],
-    trim: true
+    trim: true,
   },
   experience: {
     type: Number,
     required: [true, 'Please add years of experience'],
-    min: 0
+    min: 0,
   },
   availability: {
-    type: [String], // Array of time slots, e.g., ["09:00-10:00", "10:00-11:00", "14:00-15:00"]
-    default: []
+    type: [String], // e.g. "Mon 10:00-12:00"
+    default: [],
   },
   contactDetails: {
     type: String,
     required: [true, 'Please add contact details'],
-    trim: true
+    trim: true,
   }
 }, {
   timestamps: true
