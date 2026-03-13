@@ -1,0 +1,70 @@
+PROJECT DATABASE SCHEMA
+========================
+
+This document describes the MongoDB collections used in the Doctor Appointment System.
+Each table-style section corresponds to a Mongoose schema in the backend.
+
+
+1. USER COLLECTION (`users`)
+----------------------------
+
+| Field Name | Data Type | Constraints | Required | Description |
+|-----------|-----------|-------------|----------|-------------|
+| _id | ObjectId | Primary Key, Auto-generated | Yes | Unique identifier for each user. |
+| name | String | Trim | Yes | Full name of the user (patient/doctor/admin). |
+| email | String | Unique, Trim, Lowercase | Yes | User's email used for login and communication. |
+| password | String | Min length: 6 | Yes | Hashed password for authentication. |
+| role | String | Enum: 'patient', 'doctor', 'admin', Default: 'patient' | No | Defines access level and dashboard type. |
+| createdAt | Date | Auto (timestamp) | Yes | Record creation time. |
+| updatedAt | Date | Auto (timestamp) | Yes | Last update time of the record. |
+
+
+2. DOCTOR COLLECTION (`doctors`)
+--------------------------------
+
+| Field Name | Data Type | Constraints | Required | Description |
+|-----------|-----------|-------------|----------|-------------|
+| _id | ObjectId | Primary Key, Auto-generated | Yes | Unique identifier for each doctor. |
+| name | String | Trim | Yes | Doctor's full name. |
+| specialization | String | Trim | Yes | Doctor's specialization (e.g., Cardiologist, Dentist). |
+| experience | Number | Min: 0 | Yes | Years of professional experience. |
+| availability | Array of String | Default: [] | No | List of available time slots (e.g., "Mon 10:00-12:00"). |
+| contactDetails | String | Trim | Yes | Contact information (phone, email, or clinic details). |
+| createdAt | Date | Auto (timestamp) | Yes | Record creation time. |
+| updatedAt | Date | Auto (timestamp) | Yes | Last update time of the record. |
+
+
+3. APPOINTMENT COLLECTION (`appointments`)
+------------------------------------------
+
+| Field Name | Data Type | Constraints | Required | Description |
+|-----------|-----------|-------------|----------|-------------|
+| _id | ObjectId | Primary Key, Auto-generated | Yes | Unique identifier for each appointment. |
+| patient | ObjectId | Ref: `users` | Yes | Reference to the patient (User) who booked the appointment. |
+| doctor | ObjectId | Ref: `doctors` | Yes | Reference to the doctor (Doctor) for the appointment. |
+| date | Date | - | Yes | Date of the appointment. |
+| timeSlot | String | Trim | Yes | Specific time slot for the appointment. |
+| status | String | Enum: 'Pending', 'Confirmed', 'Completed', 'Cancelled'; Default: 'Pending' | No | Current status of the appointment. |
+| createdAt | Date | Auto (timestamp) | Yes | Record creation time. |
+| updatedAt | Date | Auto (timestamp) | Yes | Last update time of the record. |
+
+
+4. PAYMENT COLLECTION (`payments`)
+----------------------------------
+
+| Field Name | Data Type | Constraints | Required | Description |
+|-----------|-----------|-------------|----------|-------------|
+| _id | ObjectId | Primary Key, Auto-generated | Yes | Unique identifier for each payment. |
+| appointment | ObjectId | Ref: `appointments` | Yes | Appointment associated with this payment. |
+| patient | ObjectId | Ref: `users` | Yes | Patient (User) who made the payment. |
+| amount | Number | Min: 0 | Yes | Amount charged for the appointment. |
+| paymentMethod | String | Enum: 'card', 'cash', 'online'; Default: 'card' | Yes | Method used for payment. |
+| cardNumber | String | Required when paymentMethod is 'card' or 'online' | Conditional | Simulated card number for test payments. |
+| cardHolderName | String | Required when paymentMethod is 'card' or 'online' | Conditional | Name on the (simulated) card. |
+| expiryDate | String | Required when paymentMethod is 'card' or 'online' | Conditional | Card expiry in MM/YY (simulated). |
+| cvv | String | Required when paymentMethod is 'card' or 'online' | Conditional | Card CVV code (simulated). |
+| status | String | Enum: 'Pending', 'Completed', 'Failed', 'Refunded'; Default: 'Pending' | No | Current status of the payment. |
+| transactionId | String | Unique, Sparse | No | Unique transaction reference for the payment. |
+| createdAt | Date | Auto (timestamp) | Yes | Record creation time. |
+| updatedAt | Date | Auto (timestamp) | Yes | Last update time of the record. |
+

@@ -9,10 +9,11 @@ import AdminDashboard from './pages/AdminDashboard.jsx';
 import DoctorsList from './pages/DoctorsList.jsx';
 import Appointments from './pages/Appointments.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
+import './App.css';
 
 function App() {
   return (
-    <div style={{ padding: '1rem' }}>
+    <div className="app-container">
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -52,7 +53,7 @@ function App() {
           }
         />
       </Routes>
-    </div>
+      </div>
   );
 }
 

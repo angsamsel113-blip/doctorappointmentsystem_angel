@@ -1,9 +1,68 @@
+/* Minimal global theme - works with Bootstrap 5 */
+:root {
+  --app-primary: #0d6efd;
+  --app-body-bg: #f8f9fa;
+  --app-card-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background-color: #f5f5f5;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background-color: var(--app-body-bg);
+  min-height: 100vh;
+  color: #212529;
 }
 
 #root {
   min-height: 100vh;
+}
+
+/* Keep custom status badges (used across roles) */
+.badge.pending {
+  background-color: #ffc107;
+  color: #000;
+}
+
+.badge.confirmed {
+  background-color: #198754;
+  color: #fff;
+}
+
+.badge.completed {
+  background-color: #0dcaf0;
+  color: #000;
+}
+
+.badge.cancelled {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+/* Custom alert classes (so existing markup keeps working) */
+.alert.error {
+  background-color: #f8d7da;
+  color: #842029;
+  border-color: #f5c2c7;
+}
+
+.alert.success {
+  background-color: #d1e7dd;
+  color: #0f5132;
+  border-color: #badbcc;
+}
+
+.alert.info {
+  background-color: #cff4fc;
+  color: #055160;
+  border-color: #b6effb;
+}
+
+/* Navbar: active link */
+.navbar .nav-link.active {
+  color: var(--app-primary, #0d6efd) !important;
 }

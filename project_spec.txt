@@ -1,0 +1,61 @@
+1. PROJECT OVERVIEW
+Project Title: Doctor Appointment System
+Tech Stack: MERN (MongoDB, Express, React, Node.js)
+2. PROBLEM STATEMENT
+In the traditional system, patients must visit hospitals physically to book appointments, which leads to long waiting times. Appointment details are often managed manually, causing data duplication, errors, and loss of records. Patients are unaware of doctor availability and time slots in advance, resulting in inconvenience and inefficient healthcare service.
+3. PROPOSED SOLUTION
+A web-based Doctor Appointment System that allows patients to view doctors, check availability, and book appointments online. Doctors can manage their schedules digitally, and admins can monitor all activities. This system reduces manual work, saves time, and ensures accurate appointment management.
+4. USER ROLES & PERMISSIONS
+A. Patient (User):
+Can Register and Login securely.
+Can View available doctors and their specializations.
+Can Check doctor availability and time slots.
+Can Book, Cancel, or View appointments.
+Can View appointment history and status.
+B. Doctor:
+Can Login to the Doctor Dashboard.
+Can View upcoming appointments.
+Can Manage availability and schedules.
+Can View patient details related to appointments.
+Can Update appointment status.
+C. Admin:
+Can Login to Admin Dashboard.
+Can Add/Edit/Delete doctor details.
+Can Manage users (patients & doctors).
+Can View all appointments.
+Can Monitor overall system activities.
+5. DATABASE STRUCTURE (Schemas)
+A. User Schema (Patient/Admin):
+Name (String)
+Email (String, Unique)
+Password (Hashed)
+Role (String: 'patient', 'doctor', 'admin')
+B. Doctor Schema:
+Name (String)
+Specialization (String)
+Experience (Number)
+Availability (Array of Time Slots)
+Contact Details (String)
+C. Appointment Schema:
+PatientID (Reference to User)
+DoctorID (Reference to Doctor)
+Date (Date)
+TimeSlot (String)
+Status (String: 'Pending', 'Confirmed', 'Completed', 'Cancelled')
+CreatedAt (Timestamp)
+6. FEATURE WORKFLOW (User Journey)
+Login: Patient logs in to the system.
+Browse: Patient views list of doctors and specializations.
+Select: Patient selects a doctor and preferred time slot.
+Book: System creates an appointment record with status ‘Pending’.
+Doctor View: Doctor logs in and sees upcoming appointments.
+Confirm: Doctor updates appointment status.
+Notification: Patient sees updated appointment status.
+7. API ENDPOINTS (URL Rules)
+POST /api/auth/register → Register new user
+POST /api/auth/login → User login
+GET /api/doctors → Get doctor list
+POST /api/doctors → Add doctor (Admin)
+GET /api/appointments → View appointments
+POST /api/appointments → Book appointment
+PUT /api/appointments/:id → Update appointment status

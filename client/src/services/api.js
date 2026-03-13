@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:5000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
 async function request(path, options = {}, token) {
   const headers = {
@@ -46,6 +46,42 @@ export const api = {
   },
   updateAppointment(id, body, token) {
     return request(`/api/appointments/${id}`, { method: 'PUT', body: JSON.stringify(body) }, token);
+  },
+  deleteAppointment(id, token) {
+    return request(`/api/appointments/${id}`, { method: 'DELETE' }, token);
+  },
+  getDoctor(id) {
+    return request(`/api/doctors/${id}`);
+  },
+  updateDoctor(id, body, token) {
+    return request(`/api/doctors/${id}`, { method: 'PUT', body: JSON.stringify(body) }, token);
+  },
+  deleteDoctor(id, token) {
+    return request(`/api/doctors/${id}`, { method: 'DELETE' }, token);
+  },
+  getUsers(token) {
+    return request('/api/users', {}, token);
+  },
+  getUser(id, token) {
+    return request(`/api/users/${id}`, {}, token);
+  },
+  updateUser(id, body, token) {
+    return request(`/api/users/${id}`, { method: 'PUT', body: JSON.stringify(body) }, token);
+  },
+  deleteUser(id, token) {
+    return request(`/api/users/${id}`, { method: 'DELETE' }, token);
+  },
+  createPayment(body, token) {
+    return request('/api/payments', { method: 'POST', body: JSON.stringify(body) }, token);
+  },
+  getPayments(token) {
+    return request('/api/payments', {}, token);
+  },
+  getPayment(id, token) {
+    return request(`/api/payments/${id}`, {}, token);
+  },
+  getPaymentByAppointment(appointmentId, token) {
+    return request(`/api/payments/appointment/${appointmentId}`, {}, token);
   },
 };
 

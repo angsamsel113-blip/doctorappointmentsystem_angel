@@ -1,0 +1,140 @@
+Doctor Appointment System - Data Flow Diagrams (DFD)
+
+Note: These are written as Mermaid diagrams so you can directly use them later inside Markdown as:
+```mermaid
+<diagram here>
+```
+
+--------------------------------------------------
+DFD Level 0 – Context Diagram (Entire System)
+
+--------------------------------------------------
+---mermaid
+flowchart LR...
+---
+
+--------------------------------------------------
+DFD Level 1 – Major Processes (Entire System)
+--------------------------------------------------
+
+    %% Sub-processes of User Management
+    P1_1[1.1.1 User Registration]
+    P1_2[1.1.2 User Authentication]
+    P1_3[1.1.3 Role & Profile Management]
+
+    %% Data Store
+    D_Users[(User Data)]
+
+    %% Patient registration & login
+    Patient -- "Registration Details\n(Name, Email, Password)" --> P1_1
+    P1_1 -- "New User Record" --> D_Users
+    D_Users -- "Existing User Check" --> P1_1
+    P1_1 -- "Registration Success / Failure" --> Patient
+
+    Patient -- "Login Credentials" --> P1_2
+    P1_2 -- "User Record,\nHashed Password" --> D_Users
+    D_Users -- "User & Role Info" --> P1_2
+    P1_2 -- "Auth Token,\nRole = Patient" --> Patient
+
+    %% Doctor login
+    Doctor -- "Login Credentials" --> P1_2
+    P1_2 -- "User Record,\nHashed Password" --> D_Users
+    D_Users -- "User & Role Info" --> P1_2
+    P1_2 -- "Auth Token,\nRole = Doctor" --> Doctor
+
+    %% Admin login
+    Admin -- "Login Credentials" --> P1_2
+    P1_2 -- "User Record,\nHashed Password" --> D_Users
+    D_Users -- "User & Role Info" --> P1_2
+    P1_2 -- "Auth Token,\nRole = Admin" --> Admin
+
+    %% Profile & role management (mostly by Admin actions)
+    Admin -- "Update User Role / Profile" --> P1_3
+    P1_3 -- "Updated User Record" --> D_Users
+    D_Users -- "Existing User Details" --> P1_3
+    P1_3 -- "Updated User & Role Info" --> Admin
+```
+
+--------------------------------------------------
+DFD Level 1.2 – Doctor Management (Doctor Module)
+--------------------------------------------------
+
+```mermaid
+flowchart LR
+    %% External Entities
+    Patient[Patient]
+    Doctor[Doctor]
+    Admin[Admin]
+
+    %% Sub-processes of Doctor Management
+    P2_1[1.2.1 Manage Doctor Profiles\n(Add / Edit / Delete)]
+    P2_2[1.2.2 Manage Doctor Availability]
+    P2_3[1.2.3 View Doctors & Specializations]
+
+    %% Data Stores
+    D_Users[(User Data)]
+    D_Doctors[(Doctor Data)]
+
+    %% Admin managing doctor profiles
+    Admin -- "Add/Edit/Delete Doctor\n(Name, Specialization,\nExperience, Contact)" --> P2_1
+    P2_1 -- "Create/Update/Delete Doctor Record" --> D_Doctors
+    D_Doctors -- "Existing Doctor Details" --> P2_1
+    P2_1 -- "Confirmation / Updated List" --> Admin
+
+    %% Doctor managing own availability
+    Doctor -- "Update Availability\n(Time Slots)" --> P2_2
+    P2_2 -- "Updated Availability" --> D_Doctors
+    D_Doctors -- "Current Availability" --> P2_2
+    P2_2 -- "Updated Schedule Confirmation" --> Doctor
+
+    %% Patient viewing doctors
+    Patient -- "Request Doctor List\n(Filter by Specialization)" --> P2_3
+    P2_3 -- "Doctor Profiles & Availability" --> D_Doctors
+    D_Doctors -- "Filtered Doctor List" --> P2_3
+    P2_3 -- "Doctor List & Availability" --> Patient
+```
+
+---------------------------------------------
+
+--------------------------------------------------
+DFD Level 1.4 – Administration & Monitoring (Admin Module)
+--------------------------------------------------
+
+```mermaid
+flowchart LR
+    %% External Entity
+    Admin[Admin]
+
+    %% Sub-processes of Administration & Monitoring
+    P4_1[1.4.1 Manage Users\n(Patients & Doctors)]
+    P4_2[1.4.2 Monitor Appointments]
+    P4_3[1.4.3 System Activity & Reports]
+
+    %% Data Stores
+    D_Users[(User Data)]
+    D_Doctors[(Doctor Data)]
+    D_Appointments[(Appointment Data)]
+
+    %% Manage users
+    Admin -- "Create / Update / Disable Users" --> P4_1
+    P4_1 -- "User Changes" --> D_Users
+    D_Users -- "Current User List & Roles" --> P4_1
+    P4_1 -- "Updated Users & Roles" --> Admin
+
+    %% Monitor appointments
+    Admin -- "View All Appointments" --> P4_2
+    P4_2 -- "Read All Appointment Records" --> D_Appointments
+    D_Appointments -- "All Appointments" --> P4_2
+    P4_2 -- "Filtered Views\n(By Doctor, Date, Status)" --> Admin
+
+    %% System activity & reports
+    Admin -- "Request System Reports" --> P4_3
+    P4_3 -- "Read Users, Doctors,\nAppointments for Aggregation" --> D_Users
+    P4_3 -- "Read Users, Doctors,\nAppointments for Aggregation" --> D_Doctors
+    P4_3 -- "Read Users, Doctors,\nAppointments for Aggregation" --> D_Appointments
+    D_Users -- "User Metrics" --> P4_3
+    D_Doctors -- "Doctor Metrics" --> P4_3
+    D_Appointments -- "Appointment Metrics" --> P4_3
+    P4_3 -- "Dashboards,\nSummary Reports,\nAudit Trails" --> Admin
+```
+
